@@ -1,0 +1,44 @@
+<h1>Posts</h1>
+<div class="row">
+    <div class="col-md-6">
+        <select name="" id="" class="form-control" #u (change)="reloadPosts(u.value)">
+            <option value="" selected>Select a user...</option>
+            <option value="{{user.id}}" *ngFor="#user of users">{{user.name}}</option>
+        </select>
+
+        <pagination [hidden]="postsLoading" [items]="posts" (page-changed)="onPageChanged($event)"></pagination>
+        <spinner [visible]="postsLoading"></spinner>
+        <ul *ngIf="!postsLoading" class="list-group">
+            <li class="list-group-item" *ngFor="#post of pagedPosts" (click)="select(post)" [class.active]="currentPost == post">{{post.title}}</li>
+        </ul>
+    </div>
+
+    <div *ngIf="currentPost" class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">{{currentPost.title}}</h3>
+            </div>
+            <div class="panel-body">
+                {{currentPost.body}}
+                <hr>
+                <spinner *ngIf="commentsLoading"></spinner>
+                <div class="" *ngIf="currentPost.comments && !commentsLoading">
+                    <div class="media" *ngFor="#comment of currentPost.comments">
+                        <div class="media-left">
+                            <a href="#">
+                                <div class="img-holder">
+                                    <img class="media-object" src="https://unsplash.it/80/80/?random={{comment.id}}" alt="...">
+                                </div>
+                            </a>
+                        </div>
+                        <div class="media-body">
+                            <h4 class="media-heading">{{comment.name}}</h4>
+                            {{comment.body}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
